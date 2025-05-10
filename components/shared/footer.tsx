@@ -28,7 +28,7 @@ export default function Footer() {
           <p> © 2000-2024, {APP_NAME}, Inc. or its affiliates</p>
         </div>
         <div className="mt-8 flex justify-center text-sm text-gray-400">
-        301,FIANARANTSOA, Cité ANTARANDOLO N° 110 Bis | tel: 032 24 622 74 RAKOTOMAVO Richard
+          123, Main Street, Anytown, CA, Zip 12345 | +1 (123) 456-7890
         </div>
       </div>
     </footer>
