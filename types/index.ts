@@ -7,13 +7,10 @@ import {
   UserSignInSchema,
   UserSignUpSchema,
   ShippingAddressSchema,
-  SettingInputSchema,
-  CarouselSchema,
 } from "@/lib/validator";
 
 export type IProductInput = z.infer<typeof ProductInputSchema>;
 export type Data = {
-  settings: ISettingInput[];
   users: IUserInput[];
   products: IProductInput[];
   headerMenus: {
@@ -37,9 +34,5 @@ export type IUserSignIn = z.infer<typeof UserSignInSchema>;
 
 export type IUserSignUp = z.infer<typeof UserSignUpSchema>;
 
-// setting
-export type ICarousel = z.infer<typeof CarouselSchema>
-export type ISettingInput = z.infer<typeof SettingInputSchema>
-export type ClientSetting = ISettingInput & {
-  currency: string
-}
+
+
