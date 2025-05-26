@@ -42,6 +42,8 @@ import {
   AVAILABLE_PAYMENT_METHODS,
   DEFAULT_PAYMENT_METHOD,
 } from "@/lib/constants";
+import { toast } from "@/hooks/use-toast";
+import { createOrder } from "@/lib/actions/order.actions";
 
 const shippingAddressDefaultValues =
   process.env.NODE_ENV === "development"
@@ -83,6 +85,7 @@ const CheckoutForm = () => {
     updateItem,
     removeItem,
     setDeliveryDateIndex,
+    clearCart,
   } = useCartStore();
   const isMounted = useIsMounted();
 
@@ -113,7 +116,32 @@ const CheckoutForm = () => {
     useState<boolean>(false);
 
   const handlePlaceOrder = async () => {
-    // TODO: place order
+    const res = await createOrder({
+      items,
+      shippingAddress,
+      expectedDeliveryDate: calculateFutureDate(
+        AVAILABLE_DELIVERY_DATES[deliveryDateIndex!].daysToDeliver
+      ),
+      deliveryDateIndex,
+      paymentMethod,
+      itemsPrice,
+      shippingPrice,
+      taxPrice,
+      totalPrice,
+    });
+    if (!res.success) {
+      toast({
+        description: res.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        description: res.message,
+        variant: "default",
+      });
+      clearCart();     
+      router.push(`/checkout/${res.data?.orderId}`);
+    }
   };
   const handleSelectPaymentMethod = () => {
     setIsAddressSelected(true);
@@ -583,19 +611,20 @@ const CheckoutForm = () => {
                         <div className=" font-bold">
                           <p className="mb-2"> Choose a shipping speed:</p>
 
-                          <RadioGroup
-                            value={
-                              AVAILABLE_DELIVERY_DATES[deliveryDateIndex!].name
-                            }
-                            onValueChange={(value) =>
-                              setDeliveryDateIndex(
-                                AVAILABLE_DELIVERY_DATES.findIndex(
-                                  (address) => address.name === value
-                                )!
-                              )
-                            }
-                          >
-                            <ul>
+                          <ul>
+                            <RadioGroup
+                              value={
+                                AVAILABLE_DELIVERY_DATES[deliveryDateIndex!]
+                                  .name
+                              }
+                              onValueChange={(value) =>
+                                setDeliveryDateIndex(
+                                  AVAILABLE_DELIVERY_DATES.findIndex(
+                                    (address) => address.name === value
+                                  )!
+                                )
+                              }
+                            >
                               {AVAILABLE_DELIVERY_DATES.map((dd) => (
                                 <li key={dd.name} className="flex">
                                   <RadioGroupItem
@@ -629,8 +658,8 @@ const CheckoutForm = () => {
                                   </Label>
                                 </li>
                               ))}
-                            </ul>
-                          </RadioGroup>
+                            </RadioGroup>
+                          </ul>
                         </div>
                       </div>
                     </div>

@@ -4,10 +4,9 @@ import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDatabase } from "./lib/db";
 import client from "./lib/db/client";
-import User from "./lib/db/models/user.model";
-
 import NextAuth, { type DefaultSession } from "next-auth";
 import authConfig from "./auth.config";
+import User from "./lib/db/models/user.model";
 
 declare module "next-auth" {
   interface Session {
@@ -40,6 +39,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         },
         password: { type: "password" },
       },
+      
       async authorize(credentials) {
         await connectToDatabase();
         if (credentials == null) return null;

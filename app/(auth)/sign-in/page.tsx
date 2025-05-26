@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { APP_NAME } from "@/lib/constants";
 import { GoogleSignInForm } from "@/app/(auth)/sign-in/google-signin-form";
 
+
 export const metadata: Metadata = {
   title: "Sign In",
 };

@@ -123,7 +123,7 @@ const useCartStore = create(
             })),
           },
         });
-      },
+      }, 
       setShippingAddress: async (shippingAddress: ShippingAddress) => {
         const { items } = get().cart;
         set({
@@ -173,6 +173,6 @@ const useCartStore = create(
     {
       name: "cart-store",
     }
-  )
+  )   
 );
 export default useCartStore;
